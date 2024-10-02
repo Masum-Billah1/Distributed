@@ -1,10 +1,20 @@
-create partition table: create external table if not exists student_par(id int,name string,age int,city string) partitioned by (gender string) row format delimited fields terminated by ',' stored as textfile location '/output/';
+create new databse: 
+CREATE DATABASE IF NOT EXISTS 'my_database';
 
-load data from csv: load data inpath '/output/Exam_Data.csv' into table stuinfo;
+use database: 
+use 'databse_name';
 
-partition command: create external table if not exists 'partition_table_name'(id int,name string,age int,city string) partitioned by (gender string) row format delimited fields terminated by ',' stored as textfile location '/output/';
+create table:
+create external table if not exists student3(id int,name string,age int,gender string,city string) row format delimited fields terminated by ',' stored as textfile location '/labtask/task1/';
 
-partition table name: insert into table 'partition_table_name' partition (gender) select id,name,age,city,gender from 'temp_table_name';
+load data from csv: 
+load data inpath '/output/Exam_Data.csv' into table stuinfo;
+
+partition command: 
+create external table if not exists 'partition_table_name'(id int,name string,age int,city string) partitioned by (gender string) row format delimited fields terminated by ',' stored as textfile location '/output/';
+
+insert values into table: 
+insert into table 'partition_table_name' partition (gender) select id,name,age,city,gender from 'temp_table_name';
 
 
 Query
