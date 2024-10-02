@@ -1,0 +1,11 @@
+create partition table: create external table if not exists student_par(id int,name string,age int,city string) partitioned by (gender string) row format delimited fields terminated by ',' stored as textfile location '/output/';
+
+load data from csv: load data inpath '/output/Exam_Data.csv' into table stuinfo;
+
+partition command: create external table if not exists 'partition_table_name'(id int,name string,age int,city string) partitioned by (gender string) row format delimited fields terminated by ',' stored as textfile location '/output/';
+
+partition table name: insert into table 'partition_table_name' partition (gender) select id,name,age,city,gender from 'temp_table_name';
+
+
+Query
+order by: select * from student_par order by id;

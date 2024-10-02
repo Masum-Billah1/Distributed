@@ -1,0 +1,87 @@
+cd home
+cd hadoop 
+-----
+docker terminal
+
+1. docker container start -i containername
+2. docker cp srcpath(csv) containername:/home/hadoop/
+------
+hdfs dfs -ls /home/hadoop
+hdfs dfs -mkdir /labPractice(new folder in hdfs)
+hdfs dfs -put srcpath(/home/hadoop/MData.csv) destinationpath(\labPractice)
+
+
+
+
+
+===================================
+
+INFO table
+------------
+
+create external table if not exists info(id int,name string,
+age int,gender string,city string) 
+row format delimited 
+fields terminated by ',' 
+stored as textfile 
+location '/labPractice/output/';
+
+
+
+
+load data inpath '/labPractice/MData.csv' into table info;
+
+
+SET hive.exec.dynamic.partition = true;
+SET hive.exec.dynamic.partition.mode = nonstrict;
+
+
+
+partitioned by gender:
+---------------------
+create external table if not exists info_par(id int,name string,
+age int,city string) 
+partitioned by(gender string)
+row format delimited 
+fields terminated by ',' 
+stored as textfile 
+location '/labPractice/output/';
+
+describe info_par;
+
+insert into table info_par partition(gender)
+select id,name,age,city,gender from info;
+
+select * from info_par;
+
+Query:
+--------
+1. city ->chicago and gender female
+select * from info_par where city = 'Chicago' and gender = 'Female';
+
+2. age same but gender different
+
+select distinct s1.name,s2.name,s1.age,s1.gender,s2.gender 
+from (select * from info_par where gender = 'Female') as s1
+join (select * from info_par where gender != 'Female') as s2
+where s1.age = s2.age;
+
+
+
+Partitioned by city:
+--------------------
+
+create external table if not exists address_par(id int)
+partitioned by (city string)
+row format delimited
+fields terminated by ','
+stored as textfile
+location '/labPractice/output';
+
+describe address_par;
+
+insert into table address_par partition(city)
+select id,city from info;
+
+select * from address_par;
+

@@ -1,0 +1,29 @@
+cd home
+cd hadoop
+
+
+=>	mkdir word_count(create folder for word count)
+=>	ls
+=>	cd word_count
+=>	vi WordCount.java
+=>	edit (insert) esc
+=> 	:wq
+=>	vi countCount.java
+=>	:q
+=> 	javac -classpath `hadoop classpath` -d . WordCount.java
+
+
+=>	ls
+=>	jar -cvf wordCount.jar *.class
+=>	ls
+=> 	vi file.txt
+=> 	hdfs dfs -mkdir /labPractice/wordCount
+=>	hdfs dfs -mkdir /labPractice/wordCount/input
+=>	hdfs dfs -put file.txt /labPractice/wordCount/input
+=>	hdfs dfs -put wordCount.jar /labPractice/wordCount/input
+=> 	hadoop jar wordCount.jar WordCount(main file name) /labPractice/wordCount/input/file.txt /labPractice/wordCount/output
+=> 	hdfs dfs -cat /labPractice/wordCount/output/rr-00000
+
+
+
+
